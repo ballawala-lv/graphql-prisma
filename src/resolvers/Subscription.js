@@ -14,8 +14,10 @@ export default {
 	},
 
 	post: {
-		subscribe(parent, {author}, {db, pubsub}, info) {
-			const user = db.users.find((user) => user.id ===author);
+		subscribe(parent, {author}, {db, pubsub, prisma}, info) {
+
+			return prisma.subscription.comment(null, info)
+			 const user = db.users.find((user) => user.id ===author);
 			if(!user) {
 				throw new Error('User not found');
 			}
