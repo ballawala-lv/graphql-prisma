@@ -19,7 +19,7 @@ const server = new GraphQLServer({
 		Mutation,
 		// Post,
 		// User,
-		// Subscription
+		Subscription
 	},
 	context: {
 		db,

@@ -1,15 +1,31 @@
 import uuidv4 from "uuid/v4";
+import bcrypt from 'bcryptjs';
+
+
+
+// const token = jwt.sign({ id: 46, 'mysecret' })
+// creates new jwt token. two args. First obj is payload contains info for our specific purposes. Second is a secret which will only live on the nodejs server
+// const decoded = jwt.decode(token) you dont need secret to decode
+// jwt.verify(token, 'mysecret')  verifies token created by the secret
 
 export default {
-	async createUser(parent, args, ctx, info) {
-		const prisma = ctx.prisma;
+	async createUser(parent, args, {prisma }, info) {
+		// const prisma = ctx.prisma;
+		if(args.data.password.length < 8) {
+			throw new Error('Password should be 8 characters or greater');
+		}
+		const password = await bcrypt.hash(args.data.password, 10); // second param is the salt
 		const emailTaken = await prisma.exists.User({email: args.data.email});
 		if (emailTaken) {
 			throw new Error('Email Taken');
 		}
 
+
 		const user = await prisma.mutation.createUser({
-			data: args.data
+			data: {
+				...args.data,
+				password
+			}
 		}, info);
 
 
