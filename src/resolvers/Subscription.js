@@ -1,3 +1,4 @@
+import getUserId  from '../utils/getUserId'
 export default {
 	count: {
 		subscribe(parent, args, ctx, info) {
@@ -42,6 +43,20 @@ export default {
 			// 	throw new Error('User not found');
 			// }
 			// return pubsub.asyncIterator(`post ${author}`);
+		}
+	},
+	myPost: {
+		subscribe(parent,args, {prisma, request}, info) {
+			const userId = getUserId(request);
+			return prisma.subscription.post({
+				where: {
+					node: {
+						author: {
+							id: userId
+						}
+					}
+				}
+			}, info);
 		}
 	}
 }

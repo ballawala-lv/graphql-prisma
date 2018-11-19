@@ -20,3 +20,10 @@ in .graphqlconfig
 this line  "prisma": "prisma/prisma.yml"  is so npm run get-schema can run without needed tokens
 
 jwt.io
+
+pulling stuff from generated file
+prisma graphql-import
+
+
+## After You make changes to datamodel.prisma do this
+prisma deploy
